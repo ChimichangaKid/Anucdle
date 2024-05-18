@@ -3,6 +3,7 @@ name: Automate Video Uploads
 on:
     schedule:
             - cron: '0 0 * * *'
+    push:
 
 jobs:
     create-video-snippet:
