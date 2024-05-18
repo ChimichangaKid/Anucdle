@@ -7,10 +7,12 @@ from moviepy.editor import AudioFileClip
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 JSON_PATH = os.path.join(SCRIPT_DIR, 'videos.json')
+DAILY_FOLDER = "./app/daily/"
 SHORT_CLIP_TIME = 15
 LONG_CLIP_TIME = 30
-SHORT_CLIP_NAME = "short_clip.mp3"
-LONG_CLIP_NAME = "long_clip.mp3"
+SHORT_CLIP_NAME =  os.path.join(DAILY_FOLDER, "short_clip.mp3")
+LONG_CLIP_NAME = os.path.join(DAILY_FOLDER, "long_clip.mp3")
+DAILY_INFO = os.path.join(DAILY_FOLDER, "todays_info.json")
 
 
 class ClipCreator:
@@ -35,7 +37,7 @@ class ClipCreator:
         return None
     
     def save_information(self) -> None:
-        with open("todays_info.json", 'w', encoding="utf-8") as f:
+        with open(DAILY_INFO, 'w', encoding="utf-8") as f:
             json.dump(self.info, f, ensure_ascii=False, indent=4)
 
     def delete_temp_file(self) -> None:
@@ -56,15 +58,16 @@ def convert_to_seconds(time_str) -> int:
 
 if __name__ == "__main__":
     # Try up to 100 times to get a video
-    counter = 0
-    while counter < 100:
-        try:
-            clipper = ClipCreator(json_path=JSON_PATH)
-            clipper.cut_clip_to_size(length=SHORT_CLIP_TIME, output_path=SHORT_CLIP_NAME)
-            clipper.cut_clip_to_size(length=LONG_CLIP_TIME, output_path=LONG_CLIP_NAME)
-            clipper.save_information()
-            clipper.delete_temp_file()
-            counter = 100
-        except:
-            counter = counter + 1
+    clipper = ClipCreator(json_path=JSON_PATH)
+    clipper.cut_clip_to_size(length=SHORT_CLIP_TIME, output_path=SHORT_CLIP_NAME)
+    clipper.cut_clip_to_size(length=LONG_CLIP_TIME, output_path=LONG_CLIP_NAME)
+    clipper.save_information()
+    clipper.delete_temp_file()
+    counter = 100
+    # counter = 0
+    # while counter < 100:
+    #     try:
+            
+    #     except:
+    #         counter = counter + 1
         
