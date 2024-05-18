@@ -5,7 +5,8 @@ import random
 from pytube import YouTube
 from moviepy.editor import VideoFileClip
 
-JSON_PATH = "./videos.json"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+JSON_PATH = os.path.join(SCRIPT_DIR, '..', 'videos.json')
 SHORT_CLIP_TIME = 15
 LONG_CLIP_TIME = 30
 SHORT_CLIP_NAME = "short_clip.mp3"
