@@ -3,7 +3,7 @@ import os
 import json
 import random
 from pytube import YouTube
-from moviepy.editor import VideoFileClip
+from moviepy.editor import AudioFileClip
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 JSON_PATH = os.path.join(SCRIPT_DIR, 'videos.json')
@@ -28,7 +28,7 @@ class ClipCreator:
         return temp_path
 
     def cut_clip_to_size(self, length: int, output_path: str) -> None:
-        audio = VideoFileClip(self.original_path).audio.subclip(self.start_time, self.start_time + length)
+        audio = AudioFileClip(self.original_path).subclip(self.start_time, self.start_time + length)
         audio.write_audiofile(output_path)
 
         audio.close()
@@ -55,8 +55,16 @@ def convert_to_seconds(time_str) -> int:
     return total_seconds
 
 if __name__ == "__main__":
-    clipper = ClipCreator(json_path=JSON_PATH)
-    clipper.cut_clip_to_size(length=SHORT_CLIP_TIME, output_path=SHORT_CLIP_NAME)
-    clipper.cut_clip_to_size(length=LONG_CLIP_TIME, output_path=LONG_CLIP_NAME)
-    clipper.save_information()
-    clipper.delete_temp_file()
+    # Try up to 100 times to get a video
+    counter = 0
+    while counter < 100:
+        try:
+            clipper = ClipCreator(json_path=JSON_PATH)
+            clipper.cut_clip_to_size(length=SHORT_CLIP_TIME, output_path=SHORT_CLIP_NAME)
+            clipper.cut_clip_to_size(length=LONG_CLIP_TIME, output_path=LONG_CLIP_NAME)
+            clipper.save_information()
+            clipper.delete_temp_file()
+            counter = 100
+        except:
+            counter = counter + 1
+        
