@@ -7,7 +7,8 @@ from moviepy.editor import AudioFileClip
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 JSON_PATH = os.path.join(SCRIPT_DIR, 'videos.json')
-DAILY_FOLDER = "./app/daily/"
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+DAILY_FOLDER = os.path.join(REPO_ROOT, "app/daily/")
 SHORT_CLIP_TIME = 15
 LONG_CLIP_TIME = 30
 SHORT_CLIP_NAME =  os.path.join(DAILY_FOLDER, "short_clip.mp3")
