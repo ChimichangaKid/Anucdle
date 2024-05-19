@@ -69,7 +69,7 @@ function populateDropdown() {
 function getGuess() {
     const select = document.getElementById('song-select');
     const selectedOption = select.options[select.selectedIndex].text;
-    const [title, uploadDate, length] = selectedOption.split(',').map(item => item.trim());
+    const [title, uploadDate, length] = selectedOption.split('=').map(item => item.trim());
     return { title, uploadDate, length };
 }
 
