@@ -1,3 +1,11 @@
+//==================================================================================================================== 
+/*
+*   File Name: anucdle.js
+*
+*   Author: Aidan
+*   Description: Javascript functions to assist with the frontend webpage.
+*/
+// ==================================================================================================================== #
 var num_guesses = 6;
 var width = 3;
 var gameDone = false;
@@ -11,7 +19,9 @@ window.onload = function() {
     initialize();
 };
 
-
+/**
+ * @brief Frontend webpage setup, sets up the table, and initializes the button
+ */
 function initialize() {
 
     // Create the game board
@@ -29,6 +39,9 @@ function initialize() {
     document.getElementById("solution").innerText = "";
 }
 
+/**
+ * @brief Sets up the dropdown by reading data from json file.
+ */
 function populateDropdown() {
     fetch("./app/videos.json")
     .then(response => response.json())
@@ -41,7 +54,7 @@ function populateDropdown() {
                 const length = data[url].length;
                 const option = document.createElement('option');
                 option.value = url;
-                option.textContent = `${title}, ${date}, ${length}`;
+                option.textContent = `${title} = ${date} = ${length}`;
                 select.appendChild(option);
             }
         }
@@ -49,6 +62,10 @@ function populateDropdown() {
     .catch(error => console.error('Error fetching JSON:', error));
 }
 
+/**
+ * @brief Gets the data of the current guess in the dropdown box.
+ * @returns The title, upload date and length of the video.
+ */
 function getGuess() {
     const select = document.getElementById('song-select');
     const selectedOption = select.options[select.selectedIndex].text;
@@ -56,6 +73,11 @@ function getGuess() {
     return { title, uploadDate, length };
 }
 
+/**
+ * @brief Converts the string time into seconds, if the data contains year or month
+ * @param {string} time The time as a string that is being converted. 
+ * @returns The equivalent number of seconds as an int.
+ */
 function convertTimeToSeconds(time) {
     let seconds = 0;
     const timeParts = time.split(' ');
@@ -72,6 +94,11 @@ function convertTimeToSeconds(time) {
     return seconds;
 }
 
+/**
+ * @brief Converts the minutes:seconds into just seconds as an integer.
+ * @param {string} timeStr The minutes:seconds as a string.
+ * @returns The equivalent number of seconds as an int.
+ */
 function convertMinutesSecondsToSeconds(timeStr) {
     const parts = timeStr.split(':');
     parts.length === 2
@@ -80,6 +107,10 @@ function convertMinutesSecondsToSeconds(timeStr) {
     return (minutes * 60) + seconds;
 }
 
+/**
+ * @brief Checks if the guessed answer is correct, fills in the table according to how close the answer was.
+ * @returns None
+ */
 function checkAnswer() {
     if (gameDone) return;
     fetch("./app/daily/todays_info.json").then(response => response.json()).then(data => {
