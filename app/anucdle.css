@@ -13,8 +13,55 @@ hr {
     letter-spacing: 2px;
 }
 
-#board {
-    width: 350px;
-    height: 420px;
-    background-color: green;
+#song-select {
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+#board {
+    width: 800px;
+    height: 420px;
+    margin: 0 auto;
+    margin-top: 3px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.button {
+    border: none;
+    color: white;
+    background-color: darkslategray;
+    padding: 15px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+.tile {
+    border: 2px solid lightgrey;
+    width: 250px;
+    height: 60px;
+    margin: 2.5px;
+
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.correct {
+    background-color: green;
+    color: white;
+    border-color: white;
+}
+
+.incorrect {
+    background-color: orange;
+    color: white;
+    border-color: white;
+}
+
