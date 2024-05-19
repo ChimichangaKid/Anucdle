@@ -1,10 +1,13 @@
-<html>
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Anucdle</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale =0, user-scalable=no">
 
         <link rel="stylesheet" href="app/anucdle.css">
+        <link rel="icon" href="app/icon.png" type="image/png">
         <script src="app/anucdle.js"></script>
     </head>
 
@@ -12,6 +15,7 @@
         <h1 class="title">ANUCDLE</h1>
         <hr>
 
+        <p>Todays Song Snippet:</p>
         <audio controls width="100" height="100">
             <source src="app/daily/short_clip.mp3" type="audio/mp3">
             <!-- Fallback for older browsers -->
@@ -19,7 +23,7 @@
         </audio>
 
         <br>
-
+        <p>Longer Song Snippet</p>
         <audio controls width="100" height="100">
             <source src="app/daily/long_clip.mp3" type="audio/mp3">
             <!-- Fallback for older browsers -->
@@ -29,6 +33,19 @@
         <div id="board"></div>
         
         <br>
+
+        <label for="song-select">Guess:</label>
+        <select id="song-select">
+            <option value="">Choose a song...</option>
+        </select>
+
+        <br>
+        <br>
+        
+        <button class="button" id="guess-button">Make Guess</button>
+        <br>
+
+        <h1 id="solution"></h1>
 
     </body>
 </html>
