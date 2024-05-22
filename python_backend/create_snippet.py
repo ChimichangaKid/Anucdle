@@ -16,7 +16,7 @@
 import os
 import json
 import random
-from pytube import YouTube
+import yt_dlp
 from moviepy.editor import AudioFileClip
 
 # ==================================================================================================================== #
@@ -33,6 +33,20 @@ LONG_CLIP_TIME = 30
 SHORT_CLIP_NAME =  os.path.join(DAILY_FOLDER, "short_clip.mp3")
 LONG_CLIP_NAME = os.path.join(DAILY_FOLDER, "long_clip.mp3")
 DAILY_INFO = os.path.join(DAILY_FOLDER, "todays_info.json")
+ydl_opts = {
+        'format': 'bestaudio/best',
+        'outtmpl': "temp_audio.mp3",
+        'postprocessors': [
+            {
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            },
+            {
+                'key': 'FFmpegMetadata',
+            },
+        ],
+    }
 
 # ==================================================================================================================== #
 #
@@ -60,9 +74,8 @@ class ClipCreator:
 
         @return: The path to the downloaded mp3 file as a string.
         """
-        yt = YouTube(self.url)
-        stream = yt.streams.filter(only_audio=True).first()
-        temp_path = stream.download(filename='temp_audio.mp3')
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([self.url])
         return temp_path
 
     def cut_clip_to_size(self, length: int, output_path: str) -> None:
@@ -121,16 +134,9 @@ def convert_to_seconds(time_str) -> int:
 
 
 if __name__ == "__main__":
-    # Try up to 100 times to get a video
-    counter = 0
-    while counter < 100:
-        try:
-            clipper = ClipCreator(json_path=JSON_PATH)
-            clipper.cut_clip_to_size(length=SHORT_CLIP_TIME, output_path=SHORT_CLIP_NAME)
-            clipper.cut_clip_to_size(length=LONG_CLIP_TIME, output_path=LONG_CLIP_NAME)
-            clipper.save_information()
-            clipper.delete_temp_file()
-            counter = 100
-        except:
-            counter = counter + 1
-        
+    clipper = ClipCreator(json_path=JSON_PATH)
+    clipper.cut_clip_to_size(length=SHORT_CLIP_TIME, output_path=SHORT_CLIP_NAME)
+    clipper.cut_clip_to_size(length=LONG_CLIP_TIME, output_path=LONG_CLIP_NAME)
+    clipper.save_information()
+    clipper.delete_temp_file()
+    counter = 100
