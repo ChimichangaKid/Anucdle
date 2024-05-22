@@ -33,9 +33,10 @@ LONG_CLIP_TIME = 30
 SHORT_CLIP_NAME =  os.path.join(DAILY_FOLDER, "short_clip.mp3")
 LONG_CLIP_NAME = os.path.join(DAILY_FOLDER, "long_clip.mp3")
 DAILY_INFO = os.path.join(DAILY_FOLDER, "todays_info.json")
+OUTPUT_PATH = "temp_audio.mp3"
 ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': "temp_audio.mp3",
+        'outtmpl': "temp_audio",
         'postprocessors': [
             {
                 'key': 'FFmpegExtractAudio',
@@ -76,7 +77,7 @@ class ClipCreator:
         """
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.url])
-        return temp_path
+        return OUTPUT_PATH
 
     def cut_clip_to_size(self, length: int, output_path: str) -> None:
         """! Cuts the corresponding video into the specified length.
