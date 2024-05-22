@@ -47,16 +47,27 @@ function populateDropdown() {
     .then(response => response.json())
     .then(data => {
         const select = document.getElementById('song-select');
+        let sortingOptions = 'title';
+        sortingOptions = document.getElementById('sorting-options');
+        let sortedData;
+
+        switch(sortingOptions){
+            case 'title':
+                sortedData = Object.entries(data).sort((a, b) => a[1].title.localCompare(b[1].title));
+            case 'date':
+                sortedData = Object.entries(data).sort((a, b) => convertTimeToSeconds(a[1].upload_date) - convertTimeToSeconds(b[1].upload_date));
+            case 'length':
+                sortedData = Object.entries(data).sort((a, b) => convertMinutesSecondsToSeconds(a[1].length) - convertMinutesSecondsToSeconds(b[1].length));
+        }
+
         for (const url in data) {
-            if (Object.hasOwnProperty.call(data, url)) {
-                const title = data[url].title;
-                const date = data[url].upload_date;
-                const length = data[url].length;
-                const option = document.createElement('option');
-                option.value = url;
-                option.textContent = `${title} = ${date} = ${length}`;
-                select.appendChild(option);
-            }
+            const title = data[url].title;
+            const date = data[url].upload_date;
+            const length = data[url].length;
+            const option = document.createElement('option');
+            option.value = url;
+            option.textContent = `${title} = ${date} = ${length}`;
+            select.appendChild(option);
         }
     })
     .catch(error => console.error('Error fetching JSON:', error));
@@ -89,6 +100,8 @@ function convertTimeToSeconds(time) {
         seconds = number * 365 * 24 * 3600;
     } else if (unit.startsWith('month')) {
         seconds = number * 30 * 24 * 3600;
+    } else if (unit.startsWith('week')) {
+        seconds = number * 7 * 24 * 3600;
     }
 
     return seconds;
