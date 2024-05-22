@@ -106,6 +106,7 @@ def get_random_video(json_path: str):
         video_info = json.load(f)
 
     url = random.choice(list(video_info.keys()))
+    print(f"The chosen video was {url}.")
     return url, video_info[url]
 
 def convert_to_seconds(time_str) -> int:
