@@ -19,6 +19,8 @@ window.onload = function() {
     initialize();
 };
 
+
+
 /**
  * @brief Frontend webpage setup, sets up the table, and initializes the button
  */
@@ -36,6 +38,7 @@ function initialize() {
     }
 
     document.getElementById('guess-button').addEventListener('click', checkAnswer);
+    document.getElementById('sorting-options').addEventListener('change', populateDropdown());
     document.getElementById("solution").innerText = "";
 }
 
@@ -60,7 +63,7 @@ function populateDropdown() {
                 sortedData = Object.entries(data).sort((a, b) => convertMinutesSecondsToSeconds(a[1].length) - convertMinutesSecondsToSeconds(b[1].length));
         }
 
-        for (const url in data) {
+        for (const url in sortedData) {
             const title = data[url].title;
             const date = data[url].upload_date;
             const length = data[url].length;
