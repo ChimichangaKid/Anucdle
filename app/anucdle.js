@@ -59,13 +59,14 @@ function populateDropdown() {
         switch(sortingOptions){
             case 'Title':
                 sortedData = Object.entries(data).sort((a, b) => a[1].title.localeCompare(b[1].title));
+                break;
             case 'Date':
                 sortedData = Object.entries(data).sort((a, b) => convertTimeToSeconds(a[1].upload_date) - convertTimeToSeconds(b[1].upload_date));
+                break;
             case 'Length':
                 sortedData = Object.entries(data).sort((a, b) => convertMinutesSecondsToSeconds(a[1].length) - convertMinutesSecondsToSeconds(b[1].length));
+                break;
         }
-        console.log(sortedData);
-        console.log(sortingOptions);
 
         sortedData.forEach(([url, info]) => {
             const { title, upload_date, length } = info;
