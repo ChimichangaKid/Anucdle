@@ -15,9 +15,11 @@ var currentRow = 0
 
 
 window.onload = function() {
-    populateDropdown();
     initialize();
+    populateDropdown();
 };
+
+
 
 /**
  * @brief Frontend webpage setup, sets up the table, and initializes the button
@@ -36,6 +38,7 @@ function initialize() {
     }
 
     document.getElementById('guess-button').addEventListener('click', checkAnswer);
+    document.getElementById('sorting-options').addEventListener('change', populateDropdown);
     document.getElementById("solution").innerText = "";
 }
 
@@ -47,17 +50,31 @@ function populateDropdown() {
     .then(response => response.json())
     .then(data => {
         const select = document.getElementById('song-select');
-        for (const url in data) {
-            if (Object.hasOwnProperty.call(data, url)) {
-                const title = data[url].title;
-                const date = data[url].upload_date;
-                const length = data[url].length;
-                const option = document.createElement('option');
-                option.value = url;
-                option.textContent = `${title} = ${date} = ${length}`;
-                select.appendChild(option);
-            }
+        select.innerHTML = '';
+        let sortingOptions = 'Title';
+        const sorting = document.getElementById('sorting-options');
+        sortingOptions = sorting.options[sorting.selectedIndex].text
+        let sortedData;
+
+        switch(sortingOptions){
+            case 'Title':
+                sortedData = Object.entries(data).sort((a, b) => a[1].title.localeCompare(b[1].title));
+                break;
+            case 'Date':
+                sortedData = Object.entries(data).sort((a, b) => convertTimeToSeconds(a[1].upload_date) - convertTimeToSeconds(b[1].upload_date));
+                break;
+            case 'Length':
+                sortedData = Object.entries(data).sort((a, b) => convertMinutesSecondsToSeconds(a[1].length) - convertMinutesSecondsToSeconds(b[1].length));
+                break;
         }
+
+        sortedData.forEach(([url, info]) => {
+            const { title, upload_date, length } = info;
+            const option = document.createElement('option');
+            option.value = url;
+            option.textContent = `${title} = ${upload_date} = ${length}`;
+            select.appendChild(option);
+        });
     })
     .catch(error => console.error('Error fetching JSON:', error));
 }
@@ -89,6 +106,8 @@ function convertTimeToSeconds(time) {
         seconds = number * 365 * 24 * 3600;
     } else if (unit.startsWith('month')) {
         seconds = number * 30 * 24 * 3600;
+    } else if (unit.startsWith('week')) {
+        seconds = number * 7 * 24 * 3600;
     }
 
     return seconds;
@@ -173,7 +192,7 @@ function checkAnswer() {
             gameDone = true;
             document.getElementById("solution").innerText = `Solution: ${actual_title}`
         }
-    }) .catch(error => console.error('Error', error));
+    }) .catch(error => console.error("Error", error));
 }
 
 
