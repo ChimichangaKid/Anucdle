@@ -38,7 +38,7 @@ function initialize() {
     }
 
     document.getElementById('guess-button').addEventListener('click', checkAnswer);
-    document.getElementById('sorting-options').addEventListener('change', populateDropdown());
+    document.getElementById('sorting-options').addEventListener('change', populateDropdown);
     document.getElementById("solution").innerText = "";
 }
 
