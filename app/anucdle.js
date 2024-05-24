@@ -50,16 +50,16 @@ function populateDropdown() {
     .then(response => response.json())
     .then(data => {
         const select = document.getElementById('song-select');
-        let sortingOptions = 'title';
+        let sortingOptions = 'Title';
         sortingOptions = document.getElementById('sorting-options');
         let sortedData;
 
         switch(sortingOptions){
-            case 'title':
+            case 'Title':
                 sortedData = Object.entries(data).sort((a, b) => a[1].title.localCompare(b[1].title));
-            case 'date':
+            case 'Date':
                 sortedData = Object.entries(data).sort((a, b) => convertTimeToSeconds(a[1].upload_date) - convertTimeToSeconds(b[1].upload_date));
-            case 'length':
+            case 'Length':
                 sortedData = Object.entries(data).sort((a, b) => convertMinutesSecondsToSeconds(a[1].length) - convertMinutesSecondsToSeconds(b[1].length));
         }
         console.log(sortedData);
@@ -191,7 +191,7 @@ function checkAnswer() {
             gameDone = true;
             document.getElementById("solution").innerText = `Solution: ${actual_title}`
         }
-    }) .catch(error => console.error('Error', error));
+    }) .catch(error => console.error("Error", error));
 }
 
 
