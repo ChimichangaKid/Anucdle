@@ -62,6 +62,7 @@ function populateDropdown() {
             case 'length':
                 sortedData = Object.entries(data).sort((a, b) => convertMinutesSecondsToSeconds(a[1].length) - convertMinutesSecondsToSeconds(b[1].length));
         }
+        console.log(sortedData);
 
         for (const url in sortedData) {
             const title = data[url].title;
