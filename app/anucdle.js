@@ -51,7 +51,8 @@ function populateDropdown() {
     .then(data => {
         const select = document.getElementById('song-select');
         let sortingOptions = 'Title';
-        sortingOptions = document.getElementById('sorting-options');
+        const sorting = document.getElementById('sorting-options');
+        sortingOptions = sorting.options[sorting.selectedIndex].text
         let sortedData;
 
         switch(sortingOptions){
