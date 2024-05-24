@@ -15,8 +15,8 @@ var currentRow = 0
 
 
 window.onload = function() {
-    populateDropdown();
     initialize();
+    populateDropdown();
 };
 
 
@@ -50,6 +50,7 @@ function populateDropdown() {
     .then(response => response.json())
     .then(data => {
         const select = document.getElementById('song-select');
+        select.innerHTML = '';
         let sortingOptions = 'Title';
         const sorting = document.getElementById('sorting-options');
         sortingOptions = sorting.options[sorting.selectedIndex].text
@@ -57,7 +58,7 @@ function populateDropdown() {
 
         switch(sortingOptions){
             case 'Title':
-                sortedData = Object.entries(data).sort((a, b) => a[1].title.localCompare(b[1].title));
+                sortedData = Object.entries(data).sort((a, b) => a[1].title.localeCompare(b[1].title));
             case 'Date':
                 sortedData = Object.entries(data).sort((a, b) => convertTimeToSeconds(a[1].upload_date) - convertTimeToSeconds(b[1].upload_date));
             case 'Length':
@@ -66,15 +67,13 @@ function populateDropdown() {
         console.log(sortedData);
         console.log(sortingOptions);
 
-        for (const url in sortedData) {
-            const title = data[url].title;
-            const date = data[url].upload_date;
-            const length = data[url].length;
+        sortedData.forEach(([url, info]) => {
+            const { title, upload_date, length } = info;
             const option = document.createElement('option');
             option.value = url;
-            option.textContent = `${title} = ${date} = ${length}`;
+            option.textContent = `${title} = ${upload_date} = ${length}`;
             select.appendChild(option);
-        }
+        });
     })
     .catch(error => console.error('Error fetching JSON:', error));
 }
